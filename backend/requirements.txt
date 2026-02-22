@@ -1,6 +1,7 @@
 fastapi>=0.111
 uvicorn[standard]
 python-multipart
+aiofiles
 docling>=2.0
 docling-core>=2.0
 kokoro>=0.9.4

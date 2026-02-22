@@ -1,0 +1,17 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data               # persistent storage
+      - model_cache:/root/.cache       # ML model weights (~300MB on first run)
+    environment:
+      - HF_HOME=/root/.cache/huggingface
+      - TORCH_HOME=/root/.cache/torch
+    restart: unless-stopped
+
+volumes:
+  model_cache:

@@ -1,8 +1,10 @@
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from config import SPACES_DIR, DATA_DIR
 from routers import spaces, files, audio, settings
@@ -36,3 +38,8 @@ app.include_router(settings.router)
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+_static_dir = Path(os.environ.get("STATIC_DIR", "/app/static"))
+if _static_dir.exists():
+    app.mount("/", StaticFiles(directory=str(_static_dir), html=True), name="frontend")
