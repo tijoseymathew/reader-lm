@@ -30,3 +30,13 @@ export interface FileStatusResponse {
   status: FileStatus
   sections: Section[]
 }
+
+export interface Voice {
+  id: string
+  name: string
+  lang: string
+}
+
+export interface Settings {
+  voice: string
+}

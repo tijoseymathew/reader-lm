@@ -3,8 +3,8 @@ import shutil
 from pathlib import Path
 from typing import Optional
 
-from config import SPACES_DIR
-from models import SpaceMeta, FileMeta, Section
+from config import SPACES_DIR, SETTINGS_PATH
+from models import SpaceMeta, FileMeta, Section, Settings
 
 
 def _read_json(path: Path) -> dict:
@@ -16,6 +16,19 @@ def _write_json(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
+
+# --- Settings ---
+
+def get_settings() -> Settings:
+    if not SETTINGS_PATH.exists():
+        return Settings()
+    return Settings(**_read_json(SETTINGS_PATH))
+
+
+def update_settings(settings: Settings) -> Settings:
+    _write_json(SETTINGS_PATH, settings.model_dump())
+    return settings
 
 
 # --- Spaces ---

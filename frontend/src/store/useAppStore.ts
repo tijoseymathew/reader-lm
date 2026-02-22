@@ -8,6 +8,7 @@ interface AppState {
   currentPage: number
   activeSection: Section | null
   isPlaying: boolean
+  voice: string
 
   setSpaces: (spaces: Space[]) => void
   addSpace: (space: Space) => void
@@ -18,6 +19,7 @@ interface AppState {
   setCurrentPage: (page: number) => void
   setActiveSection: (section: Section | null) => void
   setIsPlaying: (playing: boolean) => void
+  setVoice: (voice: string) => void
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -27,6 +29,7 @@ export const useAppStore = create<AppState>((set) => ({
   currentPage: 1,
   activeSection: null,
   isPlaying: false,
+  voice: 'af_heart',
 
   setSpaces: (spaces) => set({ spaces }),
   addSpace: (space) => set((s) => ({ spaces: [...s.spaces, space] })),
@@ -44,4 +47,5 @@ export const useAppStore = create<AppState>((set) => ({
   setCurrentPage: (page) => set({ currentPage: page }),
   setActiveSection: (section) => set({ activeSection: section, isPlaying: false }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
+  setVoice: (voice) => set({ voice }),
 }))

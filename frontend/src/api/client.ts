@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Space, FileMeta, FileStatusResponse } from '../types'
+import type { Space, FileMeta, FileStatusResponse, Settings, Voice } from '../types'
 
 const api = axios.create({ baseURL: '/api' })
 
@@ -30,6 +30,12 @@ export const deleteFile = (spaceId: string, fileId: string) =>
 
 export const getFileStatus = (spaceId: string, fileId: string) =>
   api.get<FileStatusResponse>(`/spaces/${spaceId}/files/${fileId}/status`).then(r => r.data)
+
+// Settings
+export const getSettings = () => api.get<Settings>('/settings').then(r => r.data)
+export const updateSettings = (settings: Settings) =>
+  api.put<Settings>('/settings', settings).then(r => r.data)
+export const getVoices = () => api.get<Voice[]>('/settings/voices').then(r => r.data)
 
 // Audio URL (not a fetch — just a URL)
 export const getAudioUrl = (spaceId: string, fileId: string, sectionId: string) =>

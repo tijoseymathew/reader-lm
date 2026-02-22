@@ -51,12 +51,14 @@ async def process_pdf_background(space_id: str, file_id: str) -> None:
     audio_dir = SPACES_DIR / space_id / "files" / file_id / "audio"
     audio_dir.mkdir(exist_ok=True)
 
+    voice = storage.get_settings().voice
+
     for section in sections:
         storage.update_section_audio_status(space_id, file_id, section.id, "generating")
         audio_path = str(audio_dir / f"{section.id}.wav")
         try:
             await loop.run_in_executor(
-                None, generate_audio, section.text, audio_path
+                None, generate_audio, section.text, audio_path, voice
             )
             storage.update_section_audio_status(space_id, file_id, section.id, "ready")
         except Exception as e:

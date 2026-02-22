@@ -4,12 +4,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from config import SPACES_DIR
-from routers import spaces, files, audio
+from config import SPACES_DIR, DATA_DIR
+from routers import spaces, files, audio, settings
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     SPACES_DIR.mkdir(parents=True, exist_ok=True)
     yield
 
@@ -29,6 +30,7 @@ app.add_middleware(
 app.include_router(spaces.router)
 app.include_router(files.router)
 app.include_router(audio.router)
+app.include_router(settings.router)
 
 
 @app.get("/health")

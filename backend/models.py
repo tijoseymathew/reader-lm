@@ -2,6 +2,10 @@ from pydantic import BaseModel
 from typing import Literal
 
 
+class Settings(BaseModel):
+    voice: str = 'af_heart'
+
+
 class SpaceMeta(BaseModel):
     id: str
     name: str
