@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend          # mount source for --reload
+      - ./data:/app/data                # persistent storage
+      - model_cache:/root/.cache        # cache HuggingFace + docling models (~300MB on first run)
+    environment:
+      - HF_HOME=/root/.cache/huggingface
+      - TORCH_HOME=/root/.cache/torch
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app                 # mount source for Vite HMR
+      - frontend_node_modules:/app/node_modules   # keep container's node_modules
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  model_cache:        # persists ML model weights between container restarts
+  frontend_node_modules:  # isolates container node_modules from host
